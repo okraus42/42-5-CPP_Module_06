@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:30:55 by okraus            #+#    #+#             */
-/*   Updated: 2024/05/24 12:08:21 by okraus           ###   ########.fr       */
+/*   Updated: 2024/05/24 14:23:00 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,76 @@ static void	printFromFloat(float f)
 		std::cout << std::fixed << std::setprecision(15) << "double: " << (static_cast<double>(f)) << std::endl;
 }
 
+static bool	isDouble(std::string literal)
+{
+	if (literal == "+inf" || literal == "-inf" || literal == "nan")
+		return (true);
+	if (literal.length() < 2)
+		return (false);
+	// what about +.f ??;
+	double		d;
+	int			period;
+	std::string	start = "+-0123456789";
+	std::string	numbers = "0123456789";
+
+	period = 0;
+	for (size_t p = 0; p < literal.length(); ++p)
+	{
+		if (literal[p] == '.')
+			++period;
+	}
+	if (period != 1)
+		return (false);
+	if (start.find(literal[0]) != std::string::npos)
+	{
+		for (size_t i = 1; i < literal.length() - 1; ++i)
+		{
+			if (numbers.find(literal[i]) == std::string::npos
+				&& (literal[i] != '.' && numbers.find(literal[i - 1]) != std::string::npos))
+				return (false);
+		}
+		d = atof(literal.c_str());
+		std::cout << "test d is: " << d << "\n";
+		if (d == std::numeric_limits<double>::infinity() //not wrking for inf check
+			|| -d == std::numeric_limits<double>::infinity()
+			|| d != d) //odd property of nans)
+			return (false);
+		return (true);
+	}
+	return (false);
+}
+
+static void	printFromDouble(double d)
+{
+	std::cout << "real d is: " << d << "\n";
+	std::cout << "char: ";
+	if (d >= 0 && d < 256 && floor(d) == d && isprint(d))
+		std::cout << "\'" << (static_cast<char>(d)) << "\'" << std::endl;
+	else if (d < 256 && floor(d) == d)
+		std::cout << "Non displayable" << std::endl;
+	else
+		std::cout << "impossible" << std::endl;
+	std::cout << "int: ";
+	if (d >= INT_MIN && d <= INT_MAX)
+		std::cout << (static_cast<int>(d)) << std::endl;
+	else
+		std::cout << "impossible" << std::endl;
+	if (d == std::numeric_limits<double>::infinity())
+		std::cout << std::fixed << std::setprecision(1) << "float: +" << (static_cast<float>(d)) << "f" << std::endl;
+	else if ((static_cast<float>(d)) == std::numeric_limits<float>::infinity())
+		std::cout << std::fixed << std::setprecision(1) << "float: " << "impossible" << std::endl;
+	else if ((static_cast<float>(d)) == floor((static_cast<float>(d))))
+		std::cout << std::fixed << std::setprecision(1) << "float: " << (static_cast<float>(d)) << "f" << std::endl;
+	else
+		std::cout << std::fixed << std::setprecision(7) << "float: " << (static_cast<float>(d)) << "f" << std::endl;
+	if (d == std::numeric_limits<double>::infinity())
+		std::cout << std::fixed << std::setprecision(1) << "double: +" << d << std::endl;
+	else if (d == floor(d))
+		std::cout << std::fixed << std::setprecision(1) << "double: " << d << std::endl;
+	else
+		std::cout << std::fixed << std::setprecision(15) << "double: " << d << std::endl;
+}
+
 void	ScalarConverter::convert(std::string literal)
 {
 	std::cout << "test \"" << literal << "\"" << std::endl << std::endl;
@@ -198,7 +268,8 @@ void	ScalarConverter::convert(std::string literal)
 	else if (isFloat(literal))
 		printFromFloat(atof(literal.c_str()));
 	// identify and convert from doubles
-
+	else if (isDouble(literal))
+		printFromDouble(atof(literal.c_str()));
 	//nanfdsa
 	//inff
 	//+indsaga
