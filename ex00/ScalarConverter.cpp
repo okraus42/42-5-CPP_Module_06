@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:30:55 by okraus            #+#    #+#             */
-/*   Updated: 2024/05/23 18:27:01 by okraus           ###   ########.fr       */
+/*   Updated: 2024/05/24 12:08:21 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,32 +111,46 @@ static void	printFromInt(int i)
 
 static bool	isFloat(std::string literal)
 {
-	// double		d;
-	// std::string	start = "+-0123456789";
-	// std::string	numbers = "0123456789";
+	if (literal == "+inff" || literal == "-inff" || literal == "nanf")
+		return (true);
+	if (literal.length() < 2)
+		return (false);
+	// what about +.f ??;
+	float		f;
+	int			period;
+	std::string	start = "+-0123456789";
+	std::string	numbers = "0123456789";
 
-	
-	// if (literal.length() < 12)
-	// {
-	// 	if (start.find(literal[0]) != std::string::npos)
-	// 	{
-	// 		for (size_t i = 1; i < literal.length(); ++i)
-	// 		{
-	// 			if (numbers.find(literal[i]) == std::string::npos)
-	// 				return (false);
-	// 		}
-	// 		l = atol(literal.c_str());
-	// 		if (l >= INT_MIN && l <= INT_MAX)
-	// 			return (true);
-	// 	}
-	// }
-	// return (false);
-	(void)literal;
-	return (true);
+	period = 0;
+	for (size_t p = 0; p < literal.length(); ++p)
+	{
+		if (literal[p] == '.')
+			++period;
+	}
+	if (period != 1 || literal[literal.length() - 1] != 'f')
+		return (false);
+	if (start.find(literal[0]) != std::string::npos)
+	{
+		for (size_t i = 1; i < literal.length() - 1; ++i)
+		{
+			if (numbers.find(literal[i]) == std::string::npos
+				&& (literal[i] != '.' && numbers.find(literal[i - 1]) != std::string::npos))
+				return (false);
+		}
+		f = atof(literal.c_str());
+		std::cout << "test f is: " << f << "\n";
+		if (f == std::numeric_limits<float>::infinity() //not wrking for inf check
+			|| -f == std::numeric_limits<float>::infinity()
+			|| f != f) //odd property of nans)
+			return (false);
+		return (true);
+	}
+	return (false);
 }
 
 static void	printFromFloat(float f)
 {
+	std::cout << "real f is: " << f << "\n";
 	std::cout << "char: ";
 	if (f >= 0 && f < 256 && floor(f) == f && isprint(f))
 		std::cout << "\'" << (static_cast<char>(f)) << "\'" << std::endl;
@@ -201,8 +215,8 @@ void	ScalarConverter::convert(std::string literal)
 
 
 	// dvalue = atof(literal.c_str());
-	bool test = std::string("abc") == "abc";
-	std::cout << "test \"" << (test) <<  "\"" << std::endl;
+	// bool test = std::string("abc") == "abc";
+	// std::cout << "test \"" << (test) <<  "\"" << std::endl;
 	
 	// fvalue = dvalue;
 
