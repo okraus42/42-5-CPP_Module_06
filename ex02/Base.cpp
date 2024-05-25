@@ -6,7 +6,7 @@
 /*   By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:30:55 by okraus            #+#    #+#             */
-/*   Updated: 2024/05/25 13:55:52 by okraus           ###   ########.fr       */
+/*   Updated: 2024/05/25 14:12:29 by okraus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,35 @@ Base	*Base::generate(void)
 	srand(time(0));
 	r = rand() % 3;
 	if (r == 0)
-		return(new A());
+	{
+		A *ptr = new A();
+		ft_colorize(reinterpret_cast<uintptr_t>(ptr));
+		std::cout << "GENERATING A";
+		ft_uncolorize();
+		std::cout << std::endl;
+		return(ptr);
+	}
 	else if (r == 1)
-		return(new B());
+	{
+		B *ptr = new B();
+		ft_colorize(reinterpret_cast<uintptr_t>(ptr));
+		std::cout << "GENERATING B";
+		ft_uncolorize();
+		std::cout << std::endl;
+		return(ptr);
+	}
 	else if (r == 2)
-		return (new C());
+	{
+		C *ptr = new C();
+		ft_colorize(reinterpret_cast<uintptr_t>(ptr));
+		std::cout << "GENERATING C";
+		ft_uncolorize();
+		std::cout << std::endl;
+		return (ptr);
+	}
 	else
 	{
-		std::cerr << "Generation failed" << std::endl;
+		std::cerr << ERROR_COLOUR << "Generation failed" << NO_COLOUR << std::endl;
 		return (NULL);
 	}
 }
@@ -40,23 +61,57 @@ Base	*Base::generate(void)
 void	Base::identify(Base* base)
 {
 	if (dynamic_cast<A*>(base))
-		std::cout << "A ptr" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(base));
+		std::cout << "A ptr";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else if (dynamic_cast<B*>(base))
-		std::cout << "B ptr" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(base));
+		std::cout << "B ptr";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else if (dynamic_cast<C*>(base))
-		std::cout << "C ptr" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(base));
+		std::cout << "C ptr";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else
-		std::cerr << "Unknown" << std::endl;
+	{
+		std::cerr << ERROR_COLOUR << "Unknown" << NO_COLOUR << std::endl;
+	}
 }
 
 void	Base::identify(Base& base)
 {
 	if (dynamic_cast<A*>(&base))
-		std::cout << "A ref" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(&base));
+		std::cout << "A ref";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else if (dynamic_cast<B*>(&base))
-		std::cout << "B ref" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(&base));
+		std::cout << "B ref";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else if (dynamic_cast<C*>(&base))
-		std::cout << "C ref" << std::endl;
+	{
+		ft_colorize(reinterpret_cast<uintptr_t>(&base));
+		std::cout << "C ref";
+		ft_uncolorize();
+		std::cout << std::endl;
+	}
 	else
-		std::cerr << "Unknown" << std::endl;
+	{
+		std::cerr << ERROR_COLOUR << "Unknown" << NO_COLOUR << std::endl;
+	}
 }
