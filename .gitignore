@@ -33,3 +33,4 @@
 .vscode/settings.json
 ex00/ConversionOfScalarTypes
 ex01/Serialization
+ex02/IdentifyRealType
