@@ -32,3 +32,4 @@
 *.app
 .vscode/settings.json
 ex00/ConversionOfScalarTypes
+ex01/Serialization

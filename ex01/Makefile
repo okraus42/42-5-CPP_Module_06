@@ -6,13 +6,13 @@
 #    By: okraus <okraus@student.42prague.com>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/15 10:52:31 by okraus            #+#    #+#              #
-#    Updated: 2024/05/25 13:44:01 by okraus           ###   ########.fr        #
+#    Updated: 2024/05/25 13:44:03 by okraus           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	ConversionOfScalarTypes
-SRCS		=	main.cpp ScalarConverter.cpp colours.cpp
-HEADERS		=	ScalarConverter.hpp colours.hpp
+NAME		=	Serialization
+SRCS		=	main.cpp Serializer.cpp colours.cpp
+HEADERS		=	Serializer.hpp colours.hpp
 OBJS		=	$(SRCS:.cpp=.o)
 CPPFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g
 CPP			=	c++
